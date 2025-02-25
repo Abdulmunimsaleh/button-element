@@ -25,8 +25,22 @@
         background-color: #3e8e41;
       }
     </style>
+    <script>
+      function redirectToPayment() {
+        // Get user_id from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get("user_id");
+
+        if (userId) {
+          // Redirect to payment gateway with user_id
+          window.location.href = `https://yourpaymentgateway.com/pay?user_id=${userId}`;
+        } else {
+          alert("User ID not found. Please try again.");
+        }
+      }
+    </script>
   </head>
   <body>
-    <button class="custom-button">Pay here!</button>
+    <button class="custom-button" onclick="redirectToPayment()">Pay here!</button>
   </body>
 </html>
