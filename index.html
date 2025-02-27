@@ -3,7 +3,7 @@
   <head>
     <style>
       .custom-button {
-        background-color: #4caf50; /* Green */
+        background-color: #4caf50;
         border: none;
         color: white;
         padding: 15px 32px;
@@ -16,37 +16,29 @@
         border-radius: 8px;
         transition: background-color 0.3s;
       }
-
       .custom-button:hover {
         background-color: #45a049;
       }
-
       .custom-button:active {
         background-color: #3e8e41;
       }
     </style>
     <script>
       function simulatePayment() {
-        // Get user_id from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get("user_id");
 
         if (userId) {
-          // Send a POST request to your PHP script to mark the payment as completed
-          fetch("https://mark-payment-completed-3.onrender.com/", {
+          fetch("https://mark-payment-completed-3.onrender.com/payment_action", {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ user_id: userId }),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: userId, action: "mark_completed" }),
           })
             .then((response) => response.json())
             .then((data) => {
               if (data.success) {
                 alert("Payment confirmed! Returning to chatbot...");
-                // Optionally redirect back to the chatbot
-                window.location.href =
-                  "https://www.tidio.com/panel/sandbox?projectPublicKey=uwyfewtzd9uxw4uojwiu5jspe9zskoad&automationId=63320717";
+                window.location.href = "https://www.tidio.com/panel/sandbox?projectPublicKey=uwyfewtzd9uxw4uojwiu5jspe9zskoad&automationId=63327881";
               } else {
                 alert("Failed to confirm payment. Please try again.");
               }
