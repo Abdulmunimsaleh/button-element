@@ -26,14 +26,32 @@
       }
     </style>
     <script>
-      function redirectToPayment() {
+      function simulatePayment() {
         // Get user_id from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get("user_id");
 
         if (userId) {
-          // Redirect to payment gateway with user_id
-          window.location.href = `https://yourpaymentgateway.com/pay?user_id=${userId}`;
+          // Send a POST request to your PHP script to mark the payment as completed
+          fetch("https://mark-payment-completed-3.onrender.com/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ user_id: userId }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                alert("Payment confirmed! Returning to chatbot...");
+                // Optionally redirect back to the chatbot
+                window.location.href =
+                  "https://www.tidio.com/panel/sandbox?projectPublicKey=uwyfewtzd9uxw4uojwiu5jspe9zskoad&automationId=63320717";
+              } else {
+                alert("Failed to confirm payment. Please try again.");
+              }
+            })
+            .catch((error) => console.error("Error:", error));
         } else {
           alert("User ID not found. Please try again.");
         }
@@ -41,6 +59,6 @@
     </script>
   </head>
   <body>
-    <button class="custom-button" onclick="redirectToPayment()">Pay here!</button>
+    <button class="custom-button" onclick="simulatePayment()">Pay here!</button>
   </body>
 </html>
