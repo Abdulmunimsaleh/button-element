@@ -1,56 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <style>
-      .custom-button {
-        background-color: #4caf50;
-        border: none;
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 8px;
-        transition: background-color 0.3s;
-      }
-      .custom-button:hover {
-        background-color: #45a049;
-      }
-      .custom-button:active {
-        background-color: #3e8e41;
-      }
-    </style>
-    <script>
-      function simulatePayment() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get("user_id");
-
-        if (userId) {
-          fetch("https://mark-payment-completed-3.onrender.com/payment_action", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: userId, action: "mark_completed" }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.success) {
-                alert("Payment confirmed! Returning to chatbot...");
-                window.location.href = "https://www.tidio.com/panel/sandbox?projectPublicKey=uwyfewtzd9uxw4uojwiu5jspe9zskoad&automationId=63327881";
-              } else {
-                alert("Failed to confirm payment. Please try again.");
-              }
-            })
-            .catch((error) => console.error("Error:", error));
-        } else {
-          alert("User ID not found. Please try again.");
-        }
-      }
-    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Page</title>
   </head>
   <body>
-    <button class="custom-button" onclick="simulatePayment()">Pay here!</button>
+    <h2>Click the button to confirm payment</h2>
+    <button onclick="confirmPayment()">Pay Now</button>
+
+    <script>
+      function confirmPayment() {
+        fetch("https://payment-status-4.onrender.com/update-payment-status/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ new_status: "success you have paid" }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            alert(data.message); // Show success message
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Payment update failed.");
+          });
+      }
+    </script>
   </body>
 </html>
